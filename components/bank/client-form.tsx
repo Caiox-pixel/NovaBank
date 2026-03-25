@@ -56,7 +56,7 @@ export function ClientForm({ cliente, onSuccess }: ClientFormProps) {
         if (error) throw error
         toast.success("Cliente atualizado com sucesso!")
       } else {
-        const { error } = await supabase.from("clientes").insert(data)
+        const { error } = await supabase.from("clientes").insert([data])
         if (error) throw error
         toast.success("Cliente cadastrado com sucesso!")
       }
