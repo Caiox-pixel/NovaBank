@@ -4,7 +4,7 @@ import { AccountsTable } from "@/components/bank/accounts-table"
 import { AccountForm } from "@/components/bank/account-form"
 
 export default async function ContasPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const [contasResult, clientesResult] = await Promise.all([
     supabase
