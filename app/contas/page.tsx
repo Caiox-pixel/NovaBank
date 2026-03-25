@@ -8,7 +8,7 @@ export default async function ContasPage() {
 
   const [contasResult, clientesResult] = await Promise.all([
     supabase
-      .from("contas_bancarias")
+      .from("contas")
       .select("*, cliente:clientes(nome)")
       .order("created_at", { ascending: false }),
     supabase.from("clientes").select("*").order("nome"),
