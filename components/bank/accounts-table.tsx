@@ -70,7 +70,7 @@ export function AccountsTable({ contas }: AccountsTableProps) {
     const newStatus = toggleAction === "ativar"
 
     try {
-      const { error } = await supabase
+      const { error } = supabase
         .from("contas_bancarias")
         .update({ ativa: newStatus })
         .eq("id", toggleAccountId)

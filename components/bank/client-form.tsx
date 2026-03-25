@@ -48,7 +48,7 @@ export function ClientForm({ cliente, onSuccess }: ClientFormProps) {
 
     try {
       if (isEditing) {
-        const { error } = await supabase
+        const { error } = supabase
           .from("clientes")
           .update(data)
           .eq("id", cliente.id)
