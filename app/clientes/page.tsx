@@ -6,7 +6,7 @@ import { ClientForm } from "@/components/bank/client-form"
 export default async function ClientesPage() {
   const supabase = createClient()
 
-  const { data: clientes } = await supabase
+  const { data: clientes } = supabase
     .from("clientes")
     .select("*")
     .order("nome")
