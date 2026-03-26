@@ -6,9 +6,9 @@ import { TransactionForm } from "@/components/bank/transaction-form"
 import { Skeleton } from "@/components/ui/skeleton"
 
 async function TransactionsContent() {
-  const supabase = await createClient()
+  const supabase = createClient()
 
-  const [transacoesResult, contasResult] = await Promise.all([
+  const [transacoesResult, contasResult] = Promise.all([
     supabase
       .from("transacoes")
       .select(`

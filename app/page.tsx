@@ -12,7 +12,7 @@ const formatCurrency = (value: number) => {
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
+  const supabase = createClient()
 
   // Fetch dashboard stats
   const [clientesResult, contasResult, transacoesResult] = await Promise.all([
