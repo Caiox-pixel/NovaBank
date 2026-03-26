@@ -6,7 +6,7 @@ import { TransactionForm } from "@/components/bank/transaction-form"
 import { Skeleton } from "@/components/ui/skeleton"
 
 async function TransactionsContent() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const [transacoesResult, contasResult] = Promise.all([
     supabase
