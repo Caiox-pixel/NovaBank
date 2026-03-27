@@ -107,7 +107,7 @@ export function TransactionForm({ contas }: TransactionFormProps) {
 
       const { error: transactionError } = await supabase
         .from("transacoes")
-        .insert(transactionData)
+        .insert([transactionData])
 
       if (transactionError) throw transactionError
 
