@@ -54,7 +54,7 @@ export function AccountForm({ clientes, preselectedClienteId }: AccountFormProps
     const saldoInicial = parseFloat(formData.get("saldo_inicial") as string) || 0
 
     const data = {
-      cliente_id: parseInt(clienteId),
+      cliente_id: clienteId,
       numero_conta: generateAccountNumber(),
       tipo_conta: tipoConta,
       saldo: saldoInicial,
