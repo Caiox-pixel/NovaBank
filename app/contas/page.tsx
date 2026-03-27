@@ -11,7 +11,11 @@ export default async function ContasPage() {
       .from("contas_bancarias")
       .select("*")
       .order("created_at", { ascending: false }),
-    supabase.from("clientes").select("*").order("nome"),
+   const clientesReseult = await supabase
+      .from("clientes")
+      .select("*")
+      .order("nome")
+      console.log(clientesReseult),
   ])
 
   const contas = contasResult.data || []
