@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 async function TransactionsContent() {
   const supabase = await createClient()
 
-  const [transacoesResult, contasResult] = Promise.all([
+  const [transacoesResult, contasResult] = await Promise.all([
     supabase
       .from("transacoes")
       .select(`
