@@ -6,10 +6,12 @@ import { ClientForm } from "@/components/bank/client-form"
 export default async function ClientesPage() {
   const supabase = await createClient()
 
-  const { data: clientes } = await supabase
+  const { data: clientes, error } = await supabase
     .from("clientes")
     .select("*")
     .order("nome")
+
+  console.log("CLIENTES:", clientes, error)
 
   return (
     <DashboardLayout

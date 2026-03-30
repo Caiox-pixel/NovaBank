@@ -6,16 +6,23 @@ import { AccountForm } from "@/components/bank/account-form"
 export default async function ContasPage() {
   const supabase = await createClient()
 
-  const [contasResult, clientesResult] = await Promise.all([
-    supabase
-      .from("contas_bancarias")
-      .select("*")
-      .order("created_at", { ascending: false }),
-   supabase.from("clientes").select("*").order("nome"),
-  ])
+const [contasResult, clientesResult] = await Promise.all([
+  supabase
+    .from("contas_bancarias")
+    .select("*, cliente:clientes(nome)")
+    .order("created_at", { ascending: false }),
 
-  const contas = contasResult.data || []
-  const clientes = clientesResult.data || []
+  supabase
+    .from("clientes")
+    .select("*")
+    .order("nome"),
+])
+
+console.log("CONTAS:", contasResult.data)
+console.log("CLIENTES:", clientesResult.data)
+
+const contas = contasResult.data || []
+const clientes = clientesResult.data || []
 
   return (
     <DashboardLayout

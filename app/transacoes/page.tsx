@@ -66,3 +66,5 @@ export default function TransacoesPage() {
     </DashboardLayout>
   )
 }
+console.log("TRANSACOES:", transacoesResult.data)
+console.log("CONTAS:", contasResult.data)
