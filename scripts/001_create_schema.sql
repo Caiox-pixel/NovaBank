@@ -1,4 +1,4 @@
--- NeoBank - Sistema Bancário Digital
+-- NovaBank - Sistema Bancário Digital
 -- Schema do Banco de Dados
 
 -- Tabela de Clientes

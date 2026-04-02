@@ -6,25 +6,25 @@ import { TransactionForm } from "@/components/bank/transaction-form"
 import { Skeleton } from "@/components/ui/skeleton"
 
 async function TransactionsContent() {
-  const supabase = await createClient()
+  const supabase = await createClient() // ✅ await correto após server.ts ser async
 
   const [transacoesResult, contasResult] = await Promise.all([
     supabase
       .from("transacoes")
       .select(`
         *,
-        conta_origem:contas_bancarias!transacoes_conta_origem_id_fkey(
+        conta_origem:contas!transacoes_conta_origem_id_fkey(
           numero_conta,
           cliente:clientes(nome)
         ),
-        conta_destino:contas_bancarias!transacoes_conta_destino_id_fkey(
+        conta_destino:contas!transacoes_conta_destino_id_fkey(
           numero_conta,
           cliente:clientes(nome)
         )
-      `)
+      `) // ✅ CORRIGIDO: FK hints atualizados de "contas_bancarias" para "contas"
       .order("created_at", { ascending: false }),
     supabase
-      .from("contas_bancarias")
+      .from("contas") // ✅ CORRIGIDO: era "contas_bancarias"
       .select("*, cliente:clientes(nome)")
       .eq("ativa", true)
       .order("numero_conta"),
@@ -66,5 +66,3 @@ export default function TransacoesPage() {
     </DashboardLayout>
   )
 }
-console.log("TRANSACOES:", transacoesResult.data)
-console.log("CONTAS:", contasResult.data)

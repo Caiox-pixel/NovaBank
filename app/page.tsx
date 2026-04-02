@@ -12,12 +12,11 @@ const formatCurrency = (value: number) => {
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
+  const supabase = await createClient() // ✅ await correto após server.ts ser async
 
-  // Fetch dashboard stats
   const [clientesResult, contasResult, transacoesResult] = await Promise.all([
     supabase.from("clientes").select("*", { count: "exact", head: true }),
-    supabase.from("contas_bancarias").select("*"),
+    supabase.from("contas").select("*"), // ✅ CORRIGIDO: era "contas_bancarias"
     supabase.from("transacoes").select("*").order("created_at", { ascending: false }).limit(5),
   ])
 

@@ -54,7 +54,7 @@ export function AccountForm({ clientes, preselectedClienteId }: AccountFormProps
     const saldoInicial = parseFloat(formData.get("saldo_inicial") as string) || 0
 
     const data = {
-      cliente_id: clienteId,
+      cliente_id: parseInt(clienteId),
       numero_conta: generateAccountNumber(),
       tipo_conta: tipoConta,
       saldo: saldoInicial,
@@ -62,9 +62,9 @@ export function AccountForm({ clientes, preselectedClienteId }: AccountFormProps
     }
 
     try {
-      const { error } = await supabase.from("contas_bancarias").insert(data)
+      const { error } = await supabase.from("contas").insert(data) // ✅ CORRIGIDO: era "contas_bancarias"
       if (error) throw error
-      
+
       toast.success("Conta criada com sucesso!")
       setOpen(false)
       setClienteId("")

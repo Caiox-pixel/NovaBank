@@ -96,7 +96,6 @@ export function TransactionForm({ contas }: TransactionFormProps) {
     }
 
     try {
-      // Create transaction record
       const transactionData = {
         conta_origem_id: parseInt(contaOrigemId),
         conta_destino_id: tipoTransacao === "transferencia" ? parseInt(contaDestinoId) : null,
@@ -107,34 +106,34 @@ export function TransactionForm({ contas }: TransactionFormProps) {
 
       const { error: transactionError } = await supabase
         .from("transacoes")
-        .insert([transactionData])
+        .insert(transactionData)
 
       if (transactionError) throw transactionError
 
-      // Update account balances
+      // ✅ CORRIGIDO: todas as queries de update agora usam "contas" (não "contas_bancarias")
       if (tipoTransacao === "deposito") {
         const { error } = await supabase
-          .from("contas_bancarias")
+          .from("contas") // ✅ CORRIGIDO
           .update({ saldo: (contaOrigem?.saldo || 0) + valor })
           .eq("id", parseInt(contaOrigemId))
         if (error) throw error
       } else if (tipoTransacao === "saque") {
         const { error } = await supabase
-          .from("contas_bancarias")
+          .from("contas") // ✅ CORRIGIDO
           .update({ saldo: (contaOrigem?.saldo || 0) - valor })
           .eq("id", parseInt(contaOrigemId))
         if (error) throw error
       } else if (tipoTransacao === "transferencia") {
         const contaDestino = contasAtivas.find((c) => c.id.toString() === contaDestinoId)
-        
+
         const { error: errorOrigem } = await supabase
-          .from("contas_bancarias")
+          .from("contas") // ✅ CORRIGIDO
           .update({ saldo: (contaOrigem?.saldo || 0) - valor })
           .eq("id", parseInt(contaOrigemId))
         if (errorOrigem) throw errorOrigem
 
         const { error: errorDestino } = await supabase
-          .from("contas_bancarias")
+          .from("contas") // ✅ CORRIGIDO
           .update({ saldo: (contaDestino?.saldo || 0) + valor })
           .eq("id", parseInt(contaDestinoId))
         if (errorDestino) throw errorDestino
@@ -167,32 +166,24 @@ export function TransactionForm({ contas }: TransactionFormProps) {
 
   const getTitle = () => {
     switch (tipoTransacao) {
-      case "deposito":
-        return "Realizar Depósito"
-      case "saque":
-        return "Realizar Saque"
-      case "transferencia":
-        return "Realizar Transferência"
+      case "deposito": return "Realizar Depósito"
+      case "saque": return "Realizar Saque"
+      case "transferencia": return "Realizar Transferência"
     }
   }
 
   const getDescription = () => {
     switch (tipoTransacao) {
-      case "deposito":
-        return "Adicione fundos a uma conta bancária."
-      case "saque":
-        return "Retire fundos de uma conta bancária."
-      case "transferencia":
-        return "Transfira fundos entre contas bancárias."
+      case "deposito": return "Adicione fundos a uma conta bancária."
+      case "saque": return "Retire fundos de uma conta bancária."
+      case "transferencia": return "Transfira fundos entre contas bancárias."
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={(v) => {
       setOpen(v)
-      if (!v) {
-        router.push("/transacoes")
-      }
+      if (!v) router.push("/transacoes")
     }}>
       <DialogTrigger asChild>
         <Button>

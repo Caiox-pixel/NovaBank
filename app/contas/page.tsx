@@ -4,25 +4,18 @@ import { AccountsTable } from "@/components/bank/accounts-table"
 import { AccountForm } from "@/components/bank/account-form"
 
 export default async function ContasPage() {
-  const supabase = await createClient()
+  const supabase = await createClient() // ✅ await correto após server.ts ser async
 
-const [contasResult, clientesResult] = await Promise.all([
-  supabase
-    .from("contas_bancarias")
-    .select("*, cliente:clientes(nome)")
-    .order("created_at", { ascending: false }),
+  const [contasResult, clientesResult] = await Promise.all([
+    supabase
+      .from("contas") // ✅ CORRIGIDO: era "contas_bancarias", tabela real é "contas"
+      .select("*, cliente:clientes(nome)")
+      .order("created_at", { ascending: false }),
+    supabase.from("clientes").select("*").order("nome"),
+  ])
 
-  supabase
-    .from("clientes")
-    .select("*")
-    .order("nome"),
-])
-
-console.log("CONTAS:", contasResult.data)
-console.log("CLIENTES:", clientesResult.data)
-
-const contas = contasResult.data || []
-const clientes = clientesResult.data || []
+  const contas = contasResult.data || []
+  const clientes = clientesResult.data || []
 
   return (
     <DashboardLayout
